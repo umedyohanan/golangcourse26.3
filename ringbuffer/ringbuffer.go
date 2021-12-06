@@ -1,12 +1,15 @@
 package ringbuffer
 
-import "sync"
+import (
+	"log"
+	"sync"
+)
 
 type RingBuffer struct {
 	array []int
-	pos int
-	size int
-	m sync.RWMutex
+	pos   int
+	size  int
+	m     sync.RWMutex
 }
 
 func NewRingBuffer(size int) *RingBuffer {
@@ -14,10 +17,11 @@ func NewRingBuffer(size int) *RingBuffer {
 }
 
 func (r *RingBuffer) Push(el int) {
+	log.Println("RingBuffer Push")
 	r.m.Lock()
 	defer r.m.Unlock()
 	if r.pos == r.size-1 {
-		for i:=1; i<=r.size-1; i++ {
+		for i := 1; i <= r.size-1; i++ {
 			r.array[i-1] = r.array[i]
 		}
 		r.array[r.pos] = el
@@ -28,6 +32,7 @@ func (r *RingBuffer) Push(el int) {
 }
 
 func (r *RingBuffer) Get() []int {
+	log.Println("RingBuffer Get")
 	if r.pos < 0 {
 		return nil
 	}

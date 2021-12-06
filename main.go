@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"module26/pipelinehelper"
 	"os"
 	"os/signal"
 	"time"
-	"module20/pipelinehelper"
 )
 
 const bufferDrainInterval time.Duration = 10 * time.Second
@@ -30,12 +31,12 @@ func main() {
 	signal.Notify(sig, os.Interrupt)
 	for {
 		select {
-		case <- sig:
-			fmt.Println("Got os signal, stopping")
+		case <-sig:
+			log.Println("Got os signal, stopping")
 			return
-		case data := <- bufferedIntChannel:
+		case data := <-bufferedIntChannel:
 			fmt.Println("Produced data, ", data)
-		case <- done:
+		case <-done:
 			return
 		}
 	}

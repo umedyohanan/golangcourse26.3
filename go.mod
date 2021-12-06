@@ -1,3 +1,3 @@
-module module20
+module module26
 
 go 1.16
